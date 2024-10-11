@@ -5,7 +5,7 @@ The library can be installed with:
 ```shell
 pip install difflogic
 ```
-> ⚠️ Note that `difflogic` requires CUDA, the CUDA Toolkit (for compilation), and `torch>=1.9.0` (matching the CUDA version).
+> ⚠️ Note that, by default, `difflogic` requires CUDA, the CUDA Toolkit (for compilation), and `torch>=1.9.0` (matching the CUDA version). CUDA can be disable by setting a flag like so `export DIFFLOGIC_BUILD_CUDA_EXT=false` before running `pip install .` Only the much slower pure python implementation is available in that case.
 
 **It is very important that the installed version of PyTorch was compiled with a CUDA version that is compatible with the CUDA version of the locally installed CUDA Toolkit.**
 
