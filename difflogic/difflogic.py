@@ -1,9 +1,13 @@
+import warnings
 import torch
-import difflogic_cuda
 import numpy as np
 from .functional import bin_op_s, get_unique_connections, GradFactor
 from .packbitstensor import PackBitsTensor
 
+try:
+    import difflogic_cuda
+except ImportError:
+    warnings.warn('failed to import difflogic_cuda. no cuda features will be available')
 
 ########################################################################################################################
 
