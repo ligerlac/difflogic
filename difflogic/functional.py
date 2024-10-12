@@ -52,9 +52,12 @@ def bin_op(a, b, i):
 
 
 def bin_op_s(a, b, i_s):
+    assert a[0].shape == b[0].shape, (a[0].shape, b[0].shape)
+    if a.shape[0] > 1:
+        assert a[1].shape == b[1].shape, (a[1].shape, b[1].shape)
     r = torch.zeros_like(a)
     for i in range(16):
-        u = bin_op(a, b, i)
+        u = ID_TO_OP[i](a, b)
         r = r + i_s[..., i] * u
     return r
 
