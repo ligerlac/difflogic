@@ -7,7 +7,7 @@ from .packbitstensor import PackBitsTensor
 try:
     import difflogic_cuda
 except ImportError:
-    warnings.warn('failed to import difflogic_cuda. no cuda features will be available')
+    warnings.warn('failed to import difflogic_cuda. no cuda features will be available', ImportWarning)
 
 ########################################################################################################################
 
@@ -178,7 +178,7 @@ class GroupSum(torch.nn.Module):
     """
     The GroupSum module.
     """
-    def __init__(self, k: int, tau: float = 1., device='cuda'):
+    def __init__(self, k: int, tau: float = 1., beta = 0., device='cuda'):
         """
 
         :param k: number of intended real valued outputs, e.g., number of classes
@@ -188,6 +188,7 @@ class GroupSum(torch.nn.Module):
         super().__init__()
         self.k = k
         self.tau = tau
+        self.beta = beta
         self.device = device
 
     def forward(self, x):
@@ -195,7 +196,7 @@ class GroupSum(torch.nn.Module):
             return x.group_sum(self.k)
 
         assert x.shape[-1] % self.k == 0, (x.shape, self.k)
-        return x.reshape(*x.shape[:-1], self.k, x.shape[-1] // self.k).sum(-1) / self.tau
+        return x.reshape(*x.shape[:-1], self.k, x.shape[-1] // self.k).sum(-1) / self.tau + self.beta
 
     def extra_repr(self):
         return 'k={}, tau={}'.format(self.k, self.tau)

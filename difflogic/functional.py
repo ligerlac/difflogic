@@ -66,6 +66,7 @@ def bin_op_s(a, b, i_s):
 
 
 def get_unique_connections(in_dim, out_dim, device='cuda'):
+    print(f'get_unique_connections(in_dim={in_dim}, out_dim={out_dim}, device={device})')
     assert out_dim * 2 >= in_dim, 'The number of neurons ({}) must not be smaller than half of the number of inputs ' \
                                   '({}) because otherwise not all inputs could be used or considered.'.format(
         out_dim, in_dim
