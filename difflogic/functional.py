@@ -39,8 +39,8 @@ ID_TO_OP = {
     11: lambda a,b: 1 - b + a * b,
     12: lambda a,b: 1 - a,
     13: lambda a,b: 1 - a + a * b,
-    14: lambda a,b: 1 - a + a * b,
-    15: lambda a,b: 1 - a * b,
+    14: lambda a,b: 1 - a * b,
+    15: lambda a,b: torch.ones_like(a),
 }
 
 
