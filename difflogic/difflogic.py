@@ -7,7 +7,7 @@ from .packbitstensor import PackBitsTensor
 try:
     import difflogic_cuda
 except ImportError:
-    warnings.warn('failed to import difflogic_cuda. no cuda features will be available')
+    warnings.warn('failed to import difflogic_cuda. no cuda features will be available', ImportWarning)
 
 ########################################################################################################################
 
