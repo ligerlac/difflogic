@@ -23,49 +23,41 @@ BITS_TO_NP_DTYPE = {8: np.int8, 16: np.int16, 32: np.int32, 64: np.int64}
 # | 14 | not(A and B)         | 1     | 1     | 1     | 0     |
 # | 15 | 1                    | 1     | 1     | 1     | 1     |
 
+
+ID_TO_OP = {
+    0 : lambda a,b: torch.zeros_like(a),
+    1 : lambda a,b: a * b,
+    2 : lambda a,b: a - a * b,
+    3 : lambda a,b: a,
+    4 : lambda a,b: b - a * b,
+    5 : lambda a,b: b,
+    6 : lambda a,b: a + b - 2 * a * b,
+    7 : lambda a,b: a + b - a * b,
+    8 : lambda a,b: 1 - (a + b - a * b),
+    9 : lambda a,b: 1 - (a + b - 2 * a * b),
+    10: lambda a,b: 1 - b,
+    11: lambda a,b: 1 - b + a * b,
+    12: lambda a,b: 1 - a,
+    13: lambda a,b: 1 - a + a * b,
+    14: lambda a,b: 1 - a + a * b,
+    15: lambda a,b: 1 - a * b,
+}
+
+
 def bin_op(a, b, i):
     assert a[0].shape == b[0].shape, (a[0].shape, b[0].shape)
     if a.shape[0] > 1:
         assert a[1].shape == b[1].shape, (a[1].shape, b[1].shape)
-
-    if i == 0:
-        return torch.zeros_like(a)
-    elif i == 1:
-        return a * b
-    elif i == 2:
-        return a - a * b
-    elif i == 3:
-        return a
-    elif i == 4:
-        return b - a * b
-    elif i == 5:
-        return b
-    elif i == 6:
-        return a + b - 2 * a * b
-    elif i == 7:
-        return a + b - a * b
-    elif i == 8:
-        return 1 - (a + b - a * b)
-    elif i == 9:
-        return 1 - (a + b - 2 * a * b)
-    elif i == 10:
-        return 1 - b
-    elif i == 11:
-        return 1 - b + a * b
-    elif i == 12:
-        return 1 - a
-    elif i == 13:
-        return 1 - a + a * b
-    elif i == 14:
-        return 1 - a * b
-    elif i == 15:
-        return torch.ones_like(a)
+    return ID_TO_OP[i](a, b)
 
 
 def bin_op_s(a, b, i_s):
+    assert a[0].shape == b[0].shape, (a[0].shape, b[0].shape)
+    if a.shape[0] > 1:
+        assert a[1].shape == b[1].shape, (a[1].shape, b[1].shape)
     r = torch.zeros_like(a)
     for i in range(16):
-        u = bin_op(a, b, i)
+        u = ID_TO_OP[i](a, b)
         r = r + i_s[..., i] * u
     return r
 
